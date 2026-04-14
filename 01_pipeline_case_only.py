@@ -2,9 +2,9 @@ library(tidyverse)
 library(data.table)
 library(openxlsx)
 
-# =============================================================================
+
 # CONFIGURATION — MODIFY THESE PATHS
-# =============================================================================
+
 
 WORK_DIR <- "."                    # Working directory
 setwd(WORK_DIR)
@@ -36,13 +36,9 @@ BC_GENES <- c(
   "NOTCH1", "NOTCH2"
 )
 
-# =============================================================================
 # LOAD DATA
-# =============================================================================
 
-cat("=============================================================\n")
-cat("   PIPELINE A: Case-Only Rare Deleterious Variant Model      \n")
-cat("=============================================================\n\n")
+
 
 cat("Loading ANNOVAR annotated file...\n")
 dt <- fread(ANNOVAR_FILE, sep = "\t", header = TRUE, na.strings = c(".", "NA", ""))
@@ -59,9 +55,8 @@ sample_to_col <- setNames(paste0("Otherinfo", 12 + seq_along(all_samples)), all_
 case_cols <- sample_to_col[case_samples]
 case_cols <- case_cols[!is.na(case_cols)]
 
-# =============================================================================
 # STEP 1: FILTER VARIANTS PRESENT IN CASES
-# =============================================================================
+
 
 cat("=== Step 1: Filter to variants present in cases ===\n")
 
@@ -76,27 +71,22 @@ df_bc <- df[bc_present, ]
 cat("Variants in cases:", nrow(df_bc), "\n\n")
 rm(df); gc()
 
-# =============================================================================
 # STEP 2: EXONIC / SPLICING ONLY
-# =============================================================================
+
 
 cat("=== Step 2: Filter to exonic/splicing ===\n")
 df_exonic <- df_bc %>%
   filter(Func.refGene %in% c("exonic", "exonic;splicing", "splicing"))
 cat("Exonic/splicing:", nrow(df_exonic), "\n\n")
 
-# =============================================================================
 # STEP 3: REMOVE SYNONYMOUS
-# =============================================================================
 
 cat("=== Step 3: Remove synonymous ===\n")
 df_nonsyn <- df_exonic %>%
   filter(ExonicFunc.refGene != "synonymous SNV" | is.na(ExonicFunc.refGene))
 cat("Non-synonymous:", nrow(df_nonsyn), "\n\n")
 
-# =============================================================================
 # STEP 4: ALLELE FREQUENCY FILTER (gnomAD < 1%)
-# =============================================================================
 
 cat("=== Step 4: gnomAD AF filter (<", GNOMAD_AF_THRESHOLD * 100, "%) ===\n")
 
@@ -120,9 +110,7 @@ if (!is.null(gnomad_col)) {
 }
 cat("Rare variants:", nrow(df_rare), "\n\n")
 
-# =============================================================================
 # STEP 5: PATHOGENICITY PREDICTION
-# =============================================================================
 
 cat("=== Step 5: Multi-tool pathogenicity scoring ===\n")
 
@@ -153,9 +141,8 @@ df_pathogenic <- df_rare %>%
 
 cat("Pathogenic (>=3 tools OR REVEL>=0.5):", nrow(df_pathogenic), "\n\n")
 
-# =============================================================================
 # STEP 6: CLINVAR PATHOGENIC
-# =============================================================================
+
 
 cat("=== Step 6: ClinVar pathogenic variants ===\n")
 
@@ -164,9 +151,7 @@ clinvar_terms <- c("Pathogenic", "Pathogenic/Likely_pathogenic",
 df_clinvar <- df_rare %>% filter(CLNSIG %in% clinvar_terms)
 cat("ClinVar P/LP:", nrow(df_clinvar), "\n\n")
 
-# =============================================================================
 # STEP 7: BC GENE PANEL
-# =============================================================================
 
 cat("=== Step 7: BC gene panel variants ===\n")
 
@@ -175,9 +160,7 @@ df_bc_genes <- df_pathogenic %>%
   filter(Gene.refGene %in% BC_GENES)
 cat("Variants in BC genes:", nrow(df_bc_genes), "\n\n")
 
-# =============================================================================
 # SAVE OUTPUTS
-# =============================================================================
 
 cat("=== Saving outputs ===\n")
 
@@ -197,21 +180,3 @@ writeLines(genes_path, file.path(OUTPUT_DIR, "genes_pathogenic.txt"))
 saveRDS(df_rare,       file.path(OUTPUT_DIR, "filtered_rare.RDS"))
 saveRDS(df_pathogenic, file.path(OUTPUT_DIR, "pathogenic.RDS"))
 
-# =============================================================================
-# SUMMARY
-# =============================================================================
-
-cat("\n=======================================================\n")
-cat("                  PIPELINE A SUMMARY                   \n")
-cat("=======================================================\n")
-cat("Variants in cases:          ", nrow(df_bc), "\n")
-cat("Exonic/splicing:            ", nrow(df_exonic), "\n")
-cat("Non-synonymous:             ", nrow(df_nonsyn), "\n")
-cat("Rare (AF <=", GNOMAD_AF_THRESHOLD, "):     ", nrow(df_rare), "\n")
-cat("Pathogenic (multi-tool):    ", nrow(df_pathogenic), "\n")
-cat("ClinVar P/LP:               ", nrow(df_clinvar), "\n")
-cat("BC gene panel variants:     ", nrow(df_bc_genes), "\n")
-cat("Unique genes (all):         ", length(genes_all), "\n")
-cat("Unique genes (pathogenic):  ", length(genes_path), "\n")
-cat("=======================================================\n")
-cat("Done!\n")
