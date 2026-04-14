@@ -22,9 +22,6 @@ Multi-omics analysis combining germline whole-exome sequencing (WES) and genome-
 │   ├── 03_tcga_validation.py               # TCGA cross-cancer tissue validation
 │   └── 04_priority_tiers.py                # Priority investigation tier classification
 │
-├── figures/                      # Publication Figure Scripts
-│   ├── fig_bc300_gene_panel.py             # BC300 gene panel 4-panel figure
-│   └── fig_pca_blood_saliva.py             # PCA blood vs saliva (Supp. Fig S1)
 │
 └── data/                         # Example input file descriptions
     └── INPUT_FILES.md                      # Required input file formats
