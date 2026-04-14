@@ -1,20 +1,3 @@
-#!/usr/bin/env Rscript
-# =============================================================================
-# PIPELINE A: Case-Only Rare Deleterious Variant Model
-# =============================================================================
-# Filters germline WES variants from breast cancer cases to identify rare
-# deleterious coding variants using gnomAD allele frequency, ClinVar
-# classification, and multi-tool in-silico pathogenicity prediction.
-#
-# Input:  ANNOVAR-annotated multianno.txt (hg38) + case sample list
-# Output: Filtered variant tables + gene lists
-#
-# Tools:  ANNOVAR (2025Mar02), gnomAD v4.1, ClinVar (clinvar_20250721),
-#         dbNSFP v4.7a (REVEL, CADD, SIFT4G, PolyPhen-2, DANN)
-#
-# Reference: Wang K et al. Nucleic Acids Res. 2010;38:e164. PMID:20601685
-# =============================================================================
-
 library(tidyverse)
 library(data.table)
 library(openxlsx)
