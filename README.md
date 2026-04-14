@@ -105,9 +105,6 @@ setwd("/path/to/your/working/directory")
 
 ## Citation
 
-If you use this code, please cite:
-
-> Alnaqbi H, Zayed N, Al Meqdam F, et al. Genomic and epigenomic characterization of breast cancer in peripheral DNA. *[Journal]*, 2026.
 
 ## License
 
