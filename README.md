@@ -83,11 +83,6 @@ python methylation/03_tcga_validation.py
 python methylation/04_priority_tiers.py
 ```
 
-### 3. Generate Figures
-```bash
-python figures/fig_bc300_gene_panel.py
-python figures/fig_pca_blood_saliva.py
-```
 
 ## Configuration
 
