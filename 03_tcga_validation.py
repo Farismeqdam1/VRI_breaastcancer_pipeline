@@ -1,21 +1,3 @@
-#!/usr/bin/env python3
-"""
-03_tcga_validation.py — TCGA Cross-Cancer Tissue Validation
-
-Validates blood-derived methylation signals against TCGA 450K tumor tissue
-methylation across 8 cancer types. Classifies genes as breast-specific,
-pan-cancer, blood-only, or tissue-elevated.
-
-Input:
-  - Priority_Investigation_Genes.xlsx or gene list
-  - probe_gene_mapping.tsv (from 02_control_comparison.py)
-  - Control_Comparison_Results.xlsx (for blood Δβ)
-
-Output:
-  - TCGA_Validation_Results.xlsx (5 sheets)
-
-Downloads TCGA HM450K data from UCSC Xena (~500MB per cancer type).
-"""
 
 import os, sys, gzip, urllib.request
 import pandas as pd
@@ -25,9 +7,6 @@ from scipy import stats
 import warnings
 warnings.filterwarnings('ignore')
 
-# =============================================================================
-# CONFIGURATION
-# =============================================================================
 
 WORK_DIR    = Path(".")
 OUTPUT_DIR  = WORK_DIR / "output" / "methylation"
