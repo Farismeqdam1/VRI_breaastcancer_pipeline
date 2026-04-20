@@ -14,7 +14,6 @@ Multi-omics analysis combining germline whole-exome sequencing (WES) and genome-
 ├── wes/                          # Whole-Exome Sequencing Pipelines
 │   ├── 01_pipeline_a_case_only.R           # Pipeline A: Case-only rare deleterious model
 │   ├── 02_pipeline_b_background.R          # Pipeline B: Control-derived background subtraction
-│   └── 03_tier_classification.R            # Five-tier variant classification + Excel output
 │
 ├── methylation/                  # Methylation Analysis Pipeline
 │   ├── 01_methylation_master.py            # EPD promoter annotation, classification, QC
