@@ -19,11 +19,7 @@ Multi-omics analysis combining germline whole-exome sequencing (WES) and genome-
 │   ├── 01_methylation_master.py            # EPD promoter annotation, classification, QC
 │   ├── 02_control_comparison.py            # Healthy blood (GSE40279) comparison + Δβ
 │   ├── 03_tcga_validation.py               # TCGA cross-cancer tissue validation
-│   └── 04_priority_tiers.py                # Priority investigation tier classification
-│
-│
-└── data/                         # Example input file descriptions
-    └── INPUT_FILES.md                      # Required input file formats
+
 ```
 
 ## Prerequisites
@@ -63,8 +59,6 @@ Rscript wes/01_pipeline_a_case_only.R
 # Step 2: Run Pipeline B (background subtraction)
 Rscript wes/02_pipeline_b_background.R
 
-# Step 3: Combine and classify into tiers
-Rscript wes/03_tier_classification.R
 ```
 
 ### 2. Methylation Analysis
@@ -78,9 +72,6 @@ python methylation/02_control_comparison.py
 # Step 3: TCGA tissue validation
 python methylation/03_tcga_validation.py
 
-# Step 4: Priority tier classification
-python methylation/04_priority_tiers.py
-```
 
 
 ## Configuration
